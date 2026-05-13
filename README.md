@@ -27,11 +27,22 @@ The assets used to generate the next level were taken from FAB. They are open‑
 | ![](Assets/muxie.png) | ![](Assets/bug.png) |
 
 ### Goal Task
-The agent should be able to start the editor and navigate Muxie in the world, collecting bugs autonomously.
+The agent should be able to start the editor and navigate Muxie in the world, killing bugs autonomously. The muxie
+can kill the bugs its jumping on the bug.
 
 ### Agent Current State
-*(to be defined — observation format representing the agent's
-position, rotation, nearby bugs, and collection progress)*
+
+The agent's current state is observed through the OpenClaw UI, which displays
+in real time the tools being called, the decisions being made, and the
+actions being executed in the Unreal Editor.
+
+Additionally, the `get_world_state` tool provides the agent with structured
+information about its surroundings, including:
+
+- Current position and rotation in the world
+- Nearby bugs and their directions
+- Number of bugs collected so far
+- Total bugs remaining in the world
 
 ### Actions
 
@@ -49,8 +60,8 @@ To interact with the world, the agent needs to:
 - `detect_bug`
 
 ### Collection Mechanic
-Bugs are collected automatically when Muxie collides with them.
-A confetti effect spawns on collection and the bug disappears from the world.
+Bugs are collected automatically when Muxie jump over the bugs and colide with the mesh.
+A confetti effect spawns and the bug disappears from the world.
 
 ### LLM
 
@@ -58,7 +69,7 @@ The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its st
 
 ### Goal Validation
 
-Demo of the agent completing the task
+TODO: The Demo of the agent completing the task
 
 ### Instructions to Run the System
 
@@ -77,11 +88,6 @@ cd Muxie-An-LLM-Agent-in-Unreal-Engine-5
 
 # Open the project in Rider
 rider .
-
-# Install MCP dependencies for the OpenClaw plugin
-cd Plugins/openclaw-unreal-plugin/MCP~
-npm install
-cd ../../../
 ```
 
 > **Note:** The OpenClaw plugin is already included in this repository.
