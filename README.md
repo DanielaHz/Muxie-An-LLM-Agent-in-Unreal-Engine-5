@@ -1,6 +1,6 @@
 # Humanoid Challenge - Software Engineering
 
-![OpenClaw.png](Assets/demo-validation.gif)
+![OpenClaw.png](Assets/Demo-validation.gif)
 The core challenge isn't the world itself — it's the harness: the interface between an intelligent agent and an environment it can act in.
 
 ## Environment 
