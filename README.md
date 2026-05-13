@@ -26,24 +26,65 @@ The assets used to generate the next level were taken from FAB. They are open‑
 |--------------------|--------------|
 | ![](Assets/muxie.png) | ![](Assets/bug.png) |
 
-### Agent Current state
+### Goal Task
+The agent should be able to start the editor and navigate Muxie in the world, collecting bugs autonomously.
 
-Define an observation format that represents the agent's current state and surroundings
+### Agent Current State
+*(to be defined — observation format representing the agent's
+position, rotation, nearby bugs, and collection progress)*
 
 ### Actions
 
-Define an action space the agent can use to interact with the world (e.g. move, turn, look, pick up)
+To interact with the world, the agent needs to:
+
+1. Start the editor in Play mode to spawn Muxie.
+2. Navigate the world using the following actions:
+
+- `move_forward`
+- `move_backward`
+- `move_left`
+- `move_right`
+- `jump`
+- `rotate_view_camera`
+- `detect_bug`
+
+### Collection Mechanic
+Bugs are collected automatically when Muxie collides with them.
+A confetti effect spawns on collection and the bug disappears from the world.
 
 ### LLM
 
-Wire up an LLM (e.g. Claude, GPT, or any model with an API) to observe state, reason, and choose actions in a loop
+The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
 
-### Goal
-- 
-- Demonstrate the agent completing at least one goal-directed task (e.g. "go to the red cube", "find the key and open the door", "explore and describe the room")
-  how you represent observations, why you chose your action space, what worked and what didn't
+### Goal Validation
 
-### Instructions to run the system 
+Demo of the agent completing the task
+
+### Instructions to Run the System
+
+This setup requires the following running simultaneously:
+
+1. **Unreal Engine 5.6**
+2. **OpenClaw** running either via Docker container or installed locally on your machine
+3. **Rider, VSCode, or Visual Studio** as the IDE to work with Unreal Engine
+
+#### Linux Installation with Rider
+
+```bash
+# Clone the repository
+git clone https://github.com/DanielaHz/Muxie-An-LLM-Agent-in-Unreal-Engine-5.git
+cd Muxie-An-LLM-Agent-in-Unreal-Engine-5
+
+# Open the project in Rider
+rider .
+
+# Install MCP dependencies for the OpenClaw plugin
+cd Plugins/openclaw-unreal-plugin/MCP~
+npm install
+cd ../../../
+```
+
+> **Note:** The OpenClaw plugin is already included in this repository.
 
 ### Inputs and outputs
 
