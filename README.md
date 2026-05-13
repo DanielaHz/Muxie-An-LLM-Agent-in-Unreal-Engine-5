@@ -1,8 +1,11 @@
 # Humanoid Challenge - Software Engineering
 
-![OpenClaw.png](Assets/OpenClaw.png)
+![OpenClaw.png](Assets/Demo-validation.gif)
 The core challenge isn't the world itself — it's the harness: the interface between an intelligent agent and an environment it can act in.
 
+## Environment 
+
+![](Assets/env.png)
 ## At a minimum, your system should:
 
 - Create a virtual environment the agent can exist in (2D grid, 3D scene, text-based world — your choice)
