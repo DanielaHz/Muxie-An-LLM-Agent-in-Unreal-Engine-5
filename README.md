@@ -22,7 +22,7 @@ The assets used to generate the next level were taken from FAB. They are open‑
 
 #### Main Character (Muxie agent)
 
-![](Assets/main.png)
+![](Assets/main.gif)
 
 #### Target (bugs)
 ![](Assets/enemy.png)
