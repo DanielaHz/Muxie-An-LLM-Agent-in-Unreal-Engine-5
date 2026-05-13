@@ -20,6 +20,13 @@ https://github.com/TomLeeLive/openclaw-unreal-plugin
 ![](Assets/env.png)
 The assets used to generate the next level were taken from FAB. They are open‑source, and the link to the author’s original source is: https://www.fab.com/listings/709924e0-3128-4d23-9d36-fe35991d03c0
 
+#### Main Character (Muxie agent)
+
+![](Assets/main.png)
+
+#### Target (bugs)
+![](Assets/enemy.png)
+
 ### Agent Current state
 
 Define an observation format that represents the agent's current state and surroundings
