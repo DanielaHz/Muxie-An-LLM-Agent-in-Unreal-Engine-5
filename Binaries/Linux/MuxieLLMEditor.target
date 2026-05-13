@@ -8518,6 +8518,34 @@
 			"Type": "SymbolFile"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintGraph.debug",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintGraph.so",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintGraph.sym",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintUtilities.debug",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintUtilities.so",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/Binaries/Linux/libUnrealEditor-JsonBlueprintUtilities.sym",
+			"Type": "SymbolFile"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/MassInsights/Binaries/Linux/UnrealEditor.modules",
 			"Type": "RequiredResource"
 		},
@@ -9694,6 +9722,22 @@
 			"Type": "SymbolFile"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/Runtime/HTTPChunkInstaller/Binaries/Linux/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Runtime/HTTPChunkInstaller/Binaries/Linux/libUnrealEditor-HTTPChunkInstaller.debug",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Runtime/HTTPChunkInstaller/Binaries/Linux/libUnrealEditor-HTTPChunkInstaller.so",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Runtime/HTTPChunkInstaller/Binaries/Linux/libUnrealEditor-HTTPChunkInstaller.sym",
+			"Type": "SymbolFile"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/Runtime/HairStrands/Binaries/Linux/UnrealEditor.modules",
 			"Type": "RequiredResource"
 		},
@@ -10543,6 +10587,34 @@
 		},
 		{
 			"Path": "$(EngineDir)/Plugins/VirtualProduction/Takes/Binaries/Linux/libUnrealEditor-TakesCore.sym",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprint.debug",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprint.so",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprint.sym",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprintGraph.debug",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprintGraph.so",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/Binaries/Linux/libUnrealEditor-HttpBlueprintGraph.sym",
 			"Type": "SymbolFile"
 		},
 		{
@@ -38768,6 +38840,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/JsonBlueprintUtilities/JsonBlueprintUtilities.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/MassInsights/MassInsights.uplugin",
 			"Type": "UFS"
 		},
@@ -38852,6 +38928,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/Online/Android/AndroidFetchBackgroundDownload/AndroidFetchBackgroundDownload.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/Online/Android/OnlineSubsystemGooglePlay/OnlineSubsystemGooglePlay.uplugin",
 			"Type": "UFS"
 		},
@@ -38893,6 +38973,10 @@
 		},
 		{
 			"Path": "$(EngineDir)/Plugins/Runtime/ActorLayerUtilities/ActorLayerUtilities.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Runtime/AndroidBackgroundService/AndroidBackgroundService.uplugin",
 			"Type": "UFS"
 		},
 		{
@@ -38961,6 +39045,10 @@
 		},
 		{
 			"Path": "$(EngineDir)/Plugins/Runtime/GooglePAD/GooglePAD.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Runtime/HTTPChunkInstaller/HTTPChunkInstaller.uplugin",
 			"Type": "UFS"
 		},
 		{
@@ -39060,6 +39148,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/Web/HttpBlueprint/HttpBlueprint.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/WorldMetrics/WorldMetrics.uplugin",
 			"Type": "UFS"
 		}
@@ -39071,7 +39163,9 @@
 		"ActorSequence",
 		"AdvancedRenamer",
 		"AlembicImporter",
+		"AndroidBackgroundService",
 		"AndroidDeviceProfileSelector",
+		"AndroidFetchBackgroundDownload",
 		"AndroidFileServer",
 		"AndroidMedia",
 		"AndroidMoviePlayer",
@@ -39157,7 +39251,9 @@
 		"GitSourceControl",
 		"GoogleCloudMessaging",
 		"GooglePAD",
+		"HTTPChunkInstaller",
 		"HairStrands",
+		"HttpBlueprint",
 		"IKRig",
 		"IOSDeviceProfileSelector",
 		"ImgMedia",
@@ -39167,6 +39263,7 @@
 		"InterchangeEditor",
 		"InterchangeTests",
 		"IoStoreInsights",
+		"JsonBlueprintUtilities",
 		"KDevelopSourceCodeAccess",
 		"LauncherChunkInstaller",
 		"LevelSequenceEditor",

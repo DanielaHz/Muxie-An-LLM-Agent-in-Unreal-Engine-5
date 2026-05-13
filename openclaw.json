@@ -1,0 +1,6 @@
+{
+  "host": "172.18.0.2",
+  "port": 18789,
+  "secret": "f3aec3c8419c1b8091891674aa813b66912bb14e1db9879e1af8ec237469afe7",
+  "autoConnect": false
+}

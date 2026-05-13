@@ -18,7 +18,7 @@ DEFINE_LOG_CATEGORY(LogOpenClaw);
 FOpenClawConnectionManager* FOpenClawConnectionManager::Instance = nullptr;
 
 FOpenClawConnectionManager::FOpenClawConnectionManager()
-	: GatewayHost(TEXT("127.0.0.1"))
+	: GatewayHost(TEXT("172.18.0.2"))
 	, GatewayPort(18789)  // OpenClaw Gateway default port
 	, bAutoConnect(true)
 {
@@ -141,35 +141,17 @@ void FOpenClawConnectionManager::Disconnect()
 
 void FOpenClawConnectionManager::SendRegister()
 {
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
-	Request->SetURL(BuildUrl(TEXT("/unreal/register")));
-	Request->SetVerb(TEXT("POST"));
-	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
-	
-	// Get project name from project settings
+	// OpenClaw connects directly to Unreal via UNREAL_HOST/UNREAL_PORT env vars.
+	// No registration endpoint exists on the gateway — mark as connected directly.
+	UE_LOG(LogOpenClaw, Log, TEXT("MCP Direct mode: skipping gateway registration, marking as connected"));
+    
 	FString ProjectName = FApp::GetProjectName();
-	if (ProjectName.IsEmpty())
-	{
-		ProjectName = TEXT("UnrealProject");
-	}
-	
-	// Get engine version
-	FString EngineVersion = FString::Printf(TEXT("%d.%d"), ENGINE_MAJOR_VERSION, ENGINE_MINOR_VERSION);
-	
-	// Build registration body
-	TSharedPtr<FJsonObject> Body = MakeShareable(new FJsonObject());
-	Body->SetStringField(TEXT("project"), ProjectName);
-	Body->SetStringField(TEXT("version"), EngineVersion);
-	Body->SetStringField(TEXT("platform"), TEXT("UnrealEditor"));
-	Body->SetNumberField(TEXT("tools"), FOpenClawTools::GetToolCount());
-	
-	FString BodyString;
-	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&BodyString);
-	FJsonSerializer::Serialize(Body.ToSharedRef(), Writer);
-	
-	Request->SetContentAsString(BodyString);
-	Request->OnProcessRequestComplete().BindRaw(this, &FOpenClawConnectionManager::HandleRegisterResponse);
-	Request->ProcessRequest();
+	if (ProjectName.IsEmpty()) ProjectName = TEXT("UnrealProject");
+    
+	UE_LOG(LogOpenClaw, Log, TEXT("Connected to OpenClaw Gateway (direct mode) - Project: %s, Tools: %d"),
+		*ProjectName, FOpenClawTools::GetToolCount());
+    
+	SetState(EOpenClawConnectionState::Connected);
 }
 
 void FOpenClawConnectionManager::HandleRegisterResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bSuccess)
