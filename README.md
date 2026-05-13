@@ -20,7 +20,7 @@ https://github.com/TomLeeLive/openclaw-unreal-plugin
 ![](Assets/env.png)
 The assets used to generate the next level were taken from FAB. They are open‑source, and the link to the author’s original source is: https://www.fab.com/listings/709924e0-3128-4d23-9d36-fe35991d03c0
 
-#### Characters
+### Characters
 
 | Muxie (main Agent) | Bug (target) |
 |--------------------|--------------|
