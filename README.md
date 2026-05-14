@@ -1,12 +1,13 @@
 # Humanoid Challenge - Software Engineering
 
 ![OpenClaw.png](Assets/Demo-validation.gif)
+***Demo 1: World state querying: the agent counts all instances of a specific Blueprint object in the level in real time***
 
 This solution uses Unreal Engine 5 as the environment where the 3D world lives, OpenAI 5.3 as the LLM “brain” of the agents, and OpenClaw as the agent platform.
 To connect Unreal Engine and OpenClaw, I used the OpenClaw Unreal plugin available in the following repository:
 https://github.com/TomLeeLive/openclaw-unreal-plugin
 
-## Pipeline
+## Pipeline and design choices
 
 ![](Assets/pipeline.svg)
 
@@ -79,20 +80,22 @@ This setup requires the following running simultaneously:
 2. **OpenClaw** running either via Docker container or installed locally on your machine
 3. **Rider, VSCode, or Visual Studio** as the IDE to work with Unreal Engine
 
-#### Linux Installation with Rider
+>Note: I'm aware this setup is not easy to replicate, but I chose to use the best tools and frameworks available in production-grade environments :)
+
+#### Linux Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/DanielaHz/Muxie-An-LLM-Agent-in-Unreal-Engine-5.git
 cd Muxie-An-LLM-Agent-in-Unreal-Engine-5
 
-# Open the project in Rider
+# to open project with Rider
 rider .
-```
 
-> **Note:** The OpenClaw plugin is already included in this repository.
+# to open project with vscode
+code .
+```
 
 ### Inputs and outputs
 
-### Design choices 
 
