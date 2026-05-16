@@ -1,7 +1,8 @@
 # Humanoid Challenge - Software Engineering
 
-![OpenClaw.png](Assets/Demo-validation.gif)
 ***Demo 1: World state querying: the agent counts all instances of a specific Blueprint object in the level in real time***
+![OpenClaw.png](Assets/Demo-validation.gif)(https://drive.google.com/file/d/1yCiU0ErI--wYDydDgTGZUlIBayBf9atg/view?usp=drive_link)
+
 
 This solution uses Unreal Engine 5 as the environment where the 3D world lives, OpenAI 5.3 as the LLM “brain” of the agents, and OpenClaw as the agent platform.
 To connect Unreal Engine and OpenClaw, I used the OpenClaw Unreal plugin available in the following repository:
@@ -58,7 +59,6 @@ To interact with the world, the agent needs to:
 - `move_right`
 - `jump`
 - `rotate_view_camera`
-- `detect_bug`
 
 ### Collection Mechanic
 Bugs are collected automatically when Muxie jump over the bugs and colide with the mesh.
@@ -69,8 +69,11 @@ A confetti effect spawns and the bug disappears from the world.
 The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
 
 ### Goal Validation
-
+```
 TODO: The Demo of the agent completing the task
+
+```
+
 
 ### Instructions to Run the System
 
@@ -89,13 +92,35 @@ This setup requires the following running simultaneously:
 git clone https://github.com/DanielaHz/Muxie-An-LLM-Agent-in-Unreal-Engine-5.git
 cd Muxie-An-LLM-Agent-in-Unreal-Engine-5
 
-# to open project with Rider
+# to open project with Rider or vscode
 rider .
-
-# to open project with vscode
 code .
 ```
 
-### Inputs and outputs
+### Experimentation (what works and what not)
 
+#### 1. Natural language prompt with limited context
+![OpenClaw.png](Assets/demo2.gif)(https://drive.google.com/file/d/1l3n5s2sVqWyjfvs4_4F7SIFEXLEMT0Zs/view?usp=drive_link)
+```
+The agent receives a simple instruction in natural language with minimal information about the environment, available tools, or expected outcome.
+- Input: Play the Editor level. Once the main character has been spawned, possess it and move it to position X=-330, Y=230, Z=52. The target yaw rotation should be 58°. The task is complete when the character is within an acceptable range of the target position.
+- Output: The agent cloned the Blueprint of the main character at the position provided in the input instructions, but it did not move the actual main character as expected
+- Comment: The provided input is insufficient to achieve the intended outcome.
+```
 
+2. Natural language prompt with full context
+
+```
+The agent receives a detailed instruction in natural language, including available tools, character state, world positions, and a clear definition of success.
+- Input:
+- Output:
+- Comment:
+```
+3. Structured JSON task definition
+
+```
+The agent receives a formal JSON file describing the task, available tools, observations, and success conditions in a machine-readable format, reducing ambiguity and making the instructions more deterministic.
+- Input:
+- Output:
+- Comment:
+```
