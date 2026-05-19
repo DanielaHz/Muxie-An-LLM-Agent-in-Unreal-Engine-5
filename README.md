@@ -63,11 +63,13 @@ The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for it
 
 ### Goal Validation
 
-***Example of human‑driven actions achieving the goal***
+***Demo 2: Human‑driven actions achieving the goal***
 
 ![](Assets/HumanDemo.gif)
 
-***Demo of the agent-driven actions "achieving" the goal***
+***Demo 3: Agent-driven actions "achieving" the goal***
+
+The agent reached the Bug's position but did not jump to kill it
 
 ![](Assets/AgentDemo1.gif)
 
