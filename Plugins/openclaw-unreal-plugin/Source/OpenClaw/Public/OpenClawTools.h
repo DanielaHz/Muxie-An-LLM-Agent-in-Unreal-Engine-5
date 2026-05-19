@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Dom/JsonObject.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 
 /**
  * OpenClaw Tools
@@ -81,4 +83,17 @@ private:
 	static TSharedPtr<FJsonObject> ActorToJson(AActor* Actor, bool bDetailed = false);
 	static AActor* FindActorByName(const FString& Name);
 	static UWorld* GetEditorWorld();
+
+	static UWorld* GetPIEWorld();
+	static UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem();
+	
+	// Custom Actions
+	static TSharedPtr<FJsonObject> MoveForward(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonObject> MoveBackward(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonObject> MoveLeft(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonObject> MoveRight(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonObject> Jump(const TSharedPtr<FJsonObject>& Params);
+	static TSharedPtr<FJsonObject> GetWorldState(const TSharedPtr<FJsonObject>& Params);
+
 };
+

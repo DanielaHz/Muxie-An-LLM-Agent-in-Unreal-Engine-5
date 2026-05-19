@@ -30,7 +30,8 @@ public class OpenClaw : ModuleRules
 				"Json",
 				"JsonUtilities",
 				"Sockets",
-				"Networking"
+				"Networking",
+				"EnhancedInput"
 			}
 		);
 			

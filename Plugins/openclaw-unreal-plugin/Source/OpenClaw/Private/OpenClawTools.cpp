@@ -3,6 +3,9 @@
 #include "OpenClawTools.h"
 #include "OpenClawConnectionManager.h"
 #include "Engine/World.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/PlayerInput.h"
 #include "Engine/Engine.h"
 #include "Engine/Level.h"
 #include "EngineUtils.h"
@@ -25,6 +28,8 @@
 #include "Misc/FileHelper.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Serialization/JsonSerializer.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 // #include "HAL/PlatformFilemanager.h"
 
 TSharedPtr<FJsonObject> FOpenClawTools::ExecuteTool(const FString& ToolName, const TSharedPtr<FJsonObject>& Params)
@@ -77,6 +82,11 @@ TSharedPtr<FJsonObject> FOpenClawTools::ExecuteTool(const FString& ToolName, con
 	
 	if (ToolName == TEXT("blueprint.list")) return Blueprint_List(Params);
 	if (ToolName == TEXT("blueprint.open")) return Blueprint_Open(Params);
+	if (ToolName == TEXT("MoveForward")) return MoveForward(Params);
+	if (ToolName == TEXT("MoveBackward")) return MoveBackward(Params);
+	if (ToolName == TEXT("MoveLeft")) return MoveLeft(Params);
+	if (ToolName == TEXT("MoveRight")) return MoveRight(Params);
+	if (ToolName == TEXT("Jump")) return Jump(Params);
 	
 	return MakeErrorResult(FString::Printf(TEXT("Unknown tool: %s"), *ToolName));
 }
@@ -85,7 +95,7 @@ int32 FOpenClawTools::GetToolCount()
 {
 	// Count of all available tools
 	// Level: 4, Actor: 6, Transform: 6, Component: 3, Editor: 5, Debug: 3, Input: 3, Asset: 2, Console: 2, Blueprint: 2
-	return 36;
+	return 37;
 }
 
 // Helper functions
@@ -1040,4 +1050,210 @@ TSharedPtr<FJsonObject> FOpenClawTools::Blueprint_Open(const TSharedPtr<FJsonObj
 	
 	// TODO: Open blueprint in editor
 	return MakeErrorResult(TEXT("Blueprint opening not yet implemented"));
+}
+
+UWorld* FOpenClawTools::GetPIEWorld()
+{
+	if (!GEngine) return nullptr;
+
+	for (const FWorldContext& Context : GEngine->GetWorldContexts())
+	{
+		if (Context.WorldType == EWorldType::PIE)
+		{
+			return Context.World();
+		}
+	}
+	return nullptr;
+}
+
+UEnhancedInputLocalPlayerSubsystem* FOpenClawTools::GetEnhancedInputSubsystem()
+{
+	UWorld* World = GetPIEWorld();
+	if (!World)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PIE world not found"));
+		return nullptr;
+	}
+
+	APlayerController* PC = GEngine->GetFirstLocalPlayerController(World);
+	if (!PC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController not found"));
+		return nullptr;
+	}
+
+	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("LocalPlayer not found"));
+		return nullptr;
+	}
+
+	UEnhancedInputLocalPlayerSubsystem* Subsystem =
+		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+
+	if (!Subsystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Enhanced Input Subsystem not found"));
+		return nullptr;
+	}
+
+	return Subsystem;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::GetWorldState(const TSharedPtr<FJsonObject>& Params)
+{
+	UWorld* World = GetPIEWorld();
+	if (!World) return MakeErrorResult(TEXT("PIE world not found"));
+
+	APlayerController* PC = GEngine->GetFirstLocalPlayerController(World);
+	if (!PC) return MakeErrorResult(TEXT("PlayerController not found"));
+
+	APawn* Pawn = PC->GetPawn();
+	if (!Pawn) return MakeErrorResult(TEXT("No possessed pawn found"));
+
+	FVector Location = Pawn->GetActorLocation();
+	FRotator Rotation = Pawn->GetActorRotation();
+	FVector Velocity = Pawn->GetVelocity();
+
+	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
+	Result->SetBoolField(TEXT("success"), true);
+
+	// Pawn identity
+	Result->SetStringField(TEXT("pawn_name"), Pawn->GetName());
+	Result->SetStringField(TEXT("pawn_class"), Pawn->GetClass()->GetName());
+
+	// Location
+	TSharedPtr<FJsonObject> LocationObj = MakeShareable(new FJsonObject());
+	LocationObj->SetNumberField(TEXT("x"), Location.X);
+	LocationObj->SetNumberField(TEXT("y"), Location.Y);
+	LocationObj->SetNumberField(TEXT("z"), Location.Z);
+	Result->SetObjectField(TEXT("location"), LocationObj);
+
+	// Rotation
+	TSharedPtr<FJsonObject> RotationObj = MakeShareable(new FJsonObject());
+	RotationObj->SetNumberField(TEXT("pitch"), Rotation.Pitch);
+	RotationObj->SetNumberField(TEXT("yaw"), Rotation.Yaw);
+	RotationObj->SetNumberField(TEXT("roll"), Rotation.Roll);
+	Result->SetObjectField(TEXT("rotation"), RotationObj);
+
+	// Velocity
+	TSharedPtr<FJsonObject> VelocityObj = MakeShareable(new FJsonObject());
+	VelocityObj->SetNumberField(TEXT("x"), Velocity.X);
+	VelocityObj->SetNumberField(TEXT("y"), Velocity.Y);
+	VelocityObj->SetNumberField(TEXT("z"), Velocity.Z);
+	Result->SetObjectField(TEXT("velocity"), VelocityObj);
+
+	return Result;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::MoveForward(const TSharedPtr<FJsonObject>& Params)
+{
+	
+	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	// Load your Move InputAction asset 
+	UInputAction* MoveAction = LoadObject<UInputAction>(
+		nullptr, 
+		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
+	);
+	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
+	
+	Subsystem->InjectInputVectorForAction(MoveAction,
+				FVector(0.0f, 1.0f, 0.0f),
+				TArray<UInputModifier*>(),
+				TArray<UInputTrigger*>());
+	auto result = GetWorldState(nullptr);
+	return result;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::MoveBackward(const TSharedPtr<FJsonObject>& Params)
+{
+	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	UInputAction* MoveAction = LoadObject<UInputAction>(
+		nullptr, 
+		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
+	);
+	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
+	
+	Subsystem->InjectInputVectorForAction(MoveAction,
+				FVector(0.0f, -1.0f, 0.0f),
+				TArray<UInputModifier*>(),
+				TArray<UInputTrigger*>());
+	
+
+	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
+	Result->SetBoolField(TEXT("success"), true);
+	Result->SetStringField(TEXT("message"), TEXT("Move backward injected"));
+	return Result;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::MoveLeft(const TSharedPtr<FJsonObject>& Params)
+{
+	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	
+	UInputAction* MoveAction = LoadObject<UInputAction>(
+		nullptr, 
+		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
+	);
+	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
+
+	Subsystem->InjectInputVectorForAction(MoveAction,
+				FVector(-1.0f, 0.0f, 0.0f),
+				TArray<UInputModifier*>(),
+				TArray<UInputTrigger*>());
+	
+	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
+	Result->SetBoolField(TEXT("success"), true);
+	Result->SetStringField(TEXT("message"), TEXT("Move forward injected"));
+	return Result;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::MoveRight(const TSharedPtr<FJsonObject>& Params)
+{
+	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+
+	// Load your Move InputAction assets
+	UInputAction* MoveAction = LoadObject<UInputAction>(
+		nullptr, 
+		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
+	);
+	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
+	
+	Subsystem->InjectInputVectorForAction(MoveAction,
+				FVector(1.0f, 0.0f, 0.0f),
+				TArray<UInputModifier*>(),
+				TArray<UInputTrigger*>());
+
+	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
+	Result->SetBoolField(TEXT("success"), true);
+	Result->SetStringField(TEXT("message"), TEXT("Move backward injected"));
+	return Result;
+}
+
+TSharedPtr<FJsonObject> FOpenClawTools::Jump(const TSharedPtr<FJsonObject>& Params)
+{
+	UWorld* World = GetPIEWorld();
+	if (!World) return MakeErrorResult(TEXT("PIE world not found"));
+
+	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	
+	UInputAction* JumpAction = LoadObject<UInputAction>(
+		nullptr, 
+		TEXT("/Game/StackOBot/Input/IA_Jump.IA_Jump")
+	);
+	if (!JumpAction) return MakeErrorResult(TEXT("Jump InputAction not found"));
+
+	// Press
+	Subsystem->InjectInputForAction(
+		JumpAction,
+		FInputActionValue(true),
+		TArray<UInputModifier*>(),
+		TArray<UInputTrigger*>()
+	);
+	FTimerHandle JumpReleaseHandle;
+	
+	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
+	Result->SetBoolField(TEXT("success"), true);
+	Result->SetStringField(TEXT("message"), TEXT("Jump injected"));
+	return Result;
 }

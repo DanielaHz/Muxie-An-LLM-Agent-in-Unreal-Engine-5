@@ -29,8 +29,8 @@ The assets used to generate the next level were taken from FAB. They are open‑
 | ![](Assets/muxie.png) | ![](Assets/bug.png) |
 
 ### Goal Task
-The agent should be able to start the editor and navigate Muxie in the world, killing bugs autonomously. The muxie
-can kill the bugs its jumping on the bug.
+
+The agent must be able to start the editor, access the main character, and call the appropriate action functions to move the character toward the target bug and eliminate it autonomously. Through the MCP connection, the agent has access to a set of tools it can select and execute as needed. The task is considered successful once the agent kills at least one bug, demonstrating that it can navigate, act, and time its jump correctly.
 
 ### Agent Current State
 
@@ -38,41 +38,36 @@ The agent's current state is observed through the OpenClaw UI, which displays
 in real time the tools being called, the decisions being made, and the
 actions being executed in the Unreal Editor.
 
-Additionally, the `get_world_state` tool provides the agent with structured
-information about its surroundings, including:
-
-- Current position and rotation in the world
-- Nearby bugs and their directions
-- Number of bugs collected so far
-- Total bugs remaining in the world
-
 ### Actions
 
 To interact with the world, the agent needs to:
 
-1. Start the editor in Play mode to spawn Muxie.
-2. Navigate the world using the following actions:
+1. Start the editor in Play mode to spawn  (BP_Bot).
+2. Navigate the world using the following actions than simulate w,a,s,z keyboard inputs. 
 
-- `move_forward`
-- `move_backward`
-- `move_left`
-- `move_right`
-- `jump`
-- `rotate_view_camera`
+- `MoveForward`
+- `MoveBackward`
+- `MoveLeft`
+- `MoveRight`
+- `Jump`
 
-### Collection Mechanic
-Bugs are collected automatically when Muxie jump over the bugs and colide with the mesh.
-A confetti effect spawns and the bug disappears from the world.
+### Kill Mechanic
+Bugs are eliminated when Muxie jumps on top of the bug’s target point. This means the agent must determine the correct moment to jump in order to collide accurately.
+
+- When the collision is successful: A confetti effect is triggered and the bug disappears from the world
+- When the collision fails: Muxie turns red to indicate an incorrect jump
 
 ### LLM
 
 The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
 
 ### Goal Validation
-```
-TODO: The Demo of the agent completing the task
 
-```
+***Example of human‑driven actions achieving the goal***
+
+![](Assets/HumanDemo.gif)
+
+***Demo of the agent-driven actions "achieving" the goal***
 
 
 ### Instructions to Run the System
@@ -111,16 +106,11 @@ The agent receives a simple instruction in natural language with minimal informa
 2. Natural language prompt with full context
 
 ```
-The agent receives a detailed instruction in natural language, including available tools, character state, world positions, and a clear definition of success.
-- Input:
-- Output:
-- Comment:
+Input: Play the Editor level. Your goal is to reach the position X=-330, Y=230, Z=52, where a Bug target is located. Navigate autonomously using the MoveForward, MoveBackward, MoveLeft and MoveRight tools. Repeat until the distance to the target is less than 5 units in both the X and Y axes. Once you are within that range, call the Jump tool followed by MoveForward to kill the Bug.
+Output: The agent managed to reach the position and collide with the object in the Blueprint, but did not kill it as expected.
+Comment: It is surprisingly a good result, as it managed to move to the position specified even he does not kill the bug
 ```
-3. Structured JSON task definition
 
-```
-The agent receives a formal JSON file describing the task, available tools, observations, and success conditions in a machine-readable format, reducing ambiguity and making the instructions more deterministic.
-- Input:
-- Output:
-- Comment:
-```
+### Notes
+- If you don't give the agent access to the current state — at least its position — you can inject movement functions, but it won't recognize where it is in the 3D world. Therefore, returning the current position is essential for navigating the world properly.
+- Agents don't have perception of time, so the exposed tools somehow have to include a delay to let the Editor render and run in a more "human-like" manner.
