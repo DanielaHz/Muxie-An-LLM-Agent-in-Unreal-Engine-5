@@ -13,7 +13,7 @@ https://github.com/TomLeeLive/openclaw-unreal-plugin
 ![](Assets/pipeline.svg)
 
 - **Unreal Engine:** It is the standard software for real‑time applications, and it has also become very popular in robotic simulation environments thanks to its ability to simulate photorealistic environments, an aspect that is especially valuable when training robots in simulation.
-- **OpenAI 5.3:**  I’ve been experimenting with LLMs for a couple of months, testing everything from local models to cloud solutions like DeepSeek, Claude Opus, and OpenAI. So far, in my experience, OpenAI’s models have delivered the most consistent and reliable results. Because of that, I consider OpenAI 5.3 a strong and affordable “brain” for this task.
+- **GPT-Codex-5.3:**  I’ve been experimenting with LLMs for a couple of months, testing everything from local models to cloud solutions like DeepSeek, Claude Opus, and OpenAI. So far, in my experience, OpenAI’s models have delivered the most consistent and reliable results. Because of that, I consider OpenAI 5.3 a strong and affordable “brain” for this task.
 - **OpenClaw:** In parallel with my LLM experimentation, I’ve been using OpenClaw for personal tasks, and I’m genuinely amazed by what it enables. The platform makes it surprisingly easy to build powerful agent workflows, and it has consistently delivered results.
 - **OpenClawUE:** The bridge between Unreal Engine and OpenClaw through an MCP connection.
 
@@ -34,9 +34,8 @@ The agent must be able to start the editor, access the main character, and call 
 
 ### Agent Current State
 
-The agent's current state is observed through the OpenClaw UI, which displays
-in real time the tools being called, the decisions being made, and the
-actions being executed in the Unreal Editor.
+The agent's current state is observed through the OpenClaw UI and the Rider Terminal, which display in real time the tools being called, the decisions being made from the OpenClaw side, and the actions being executed in the Unreal Editor.
+In terms of world state, to give the agent context about where it is, I use the function GetWorldState, which returns the location, rotation, and velocity of the current pawn actor. With this, the agent can evaluate its position after calling the movement tools and navigate toward the desired target.
 
 ### Actions
 
@@ -54,12 +53,13 @@ To interact with the world, the agent needs to:
 ### Kill Mechanic
 Bugs are eliminated when Muxie jumps on top of the bug’s target point. This means the agent must determine the correct moment to jump in order to collide accurately.
 
-- When the collision is successful: A confetti effect is triggered and the bug disappears from the world
-- When the collision fails: Muxie turns red to indicate an incorrect jump
+
+- **When the collision is successful**: A confetti effect is triggered and the bug disappears from the world
+- **When the collision fails**: Muxie turns red
 
 ### LLM
 
-The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
+The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
 
 ### Goal Validation
 
@@ -69,6 +69,7 @@ The brain of the agent is the GPT-5.3-codex of OpenAI.  It was chosen for its st
 
 ***Demo of the agent-driven actions "achieving" the goal***
 
+![](Assets/AgentDemo1.gif)
 
 ### Instructions to Run the System
 
