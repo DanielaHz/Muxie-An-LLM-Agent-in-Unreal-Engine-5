@@ -95,7 +95,8 @@ int32 FOpenClawTools::GetToolCount()
 {
 	// Count of all available tools
 	// Level: 4, Actor: 6, Transform: 6, Component: 3, Editor: 5, Debug: 3, Input: 3, Asset: 2, Console: 2, Blueprint: 2
-	return 37;
+	// 5 custom actions implemented by Daniela Hernandez.
+	return 41;
 }
 
 // Helper functions
@@ -1060,7 +1061,8 @@ UWorld* FOpenClawTools::GetPIEWorld()
 	{
 		if (Context.WorldType == EWorldType::PIE)
 		{
-			return Context.World();
+			UWorld* World = Context.World();
+			if (World) return World; // ← null check before returning
 		}
 	}
 	return nullptr;
@@ -1149,85 +1151,86 @@ TSharedPtr<FJsonObject> FOpenClawTools::GetWorldState(const TSharedPtr<FJsonObje
 
 TSharedPtr<FJsonObject> FOpenClawTools::MoveForward(const TSharedPtr<FJsonObject>& Params)
 {
-	
-	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
-	// Load your Move InputAction asset 
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetEnhancedInputSubsystem();
+	if (!Subsystem) return MakeErrorResult(TEXT("Enhanced Input Subsystem not found")); // ← this was missing
+
 	UInputAction* MoveAction = LoadObject<UInputAction>(
 		nullptr, 
 		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
 	);
 	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
-	
-	Subsystem->InjectInputVectorForAction(MoveAction,
-				FVector(0.0f, 1.0f, 0.0f),
-				TArray<UInputModifier*>(),
-				TArray<UInputTrigger*>());
-	auto result = GetWorldState(nullptr);
-	return result;
+    
+	Subsystem->InjectInputVectorForAction(
+		MoveAction,
+		FVector(0.0f, 1.0f, 0.0f),
+		TArray<UInputModifier*>(),
+		TArray<UInputTrigger*>()
+	);
+
+	return GetWorldState(nullptr);
 }
 
 TSharedPtr<FJsonObject> FOpenClawTools::MoveBackward(const TSharedPtr<FJsonObject>& Params)
 {
-	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetEnhancedInputSubsystem();
+	if (!Subsystem) return MakeErrorResult(TEXT("Enhanced Input Subsystem not found")); // ← this was missing
+
 	UInputAction* MoveAction = LoadObject<UInputAction>(
 		nullptr, 
 		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
 	);
 	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
-	
-	Subsystem->InjectInputVectorForAction(MoveAction,
-				FVector(0.0f, -1.0f, 0.0f),
-				TArray<UInputModifier*>(),
-				TArray<UInputTrigger*>());
-	
+    
+	Subsystem->InjectInputVectorForAction(
+		MoveAction,
+		FVector(0.0f, -1.0f, 0.0f),
+		TArray<UInputModifier*>(),
+		TArray<UInputTrigger*>()
+	);
 
-	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
-	Result->SetBoolField(TEXT("success"), true);
-	Result->SetStringField(TEXT("message"), TEXT("Move backward injected"));
-	return Result;
+	return GetWorldState(nullptr);
 }
 
 TSharedPtr<FJsonObject> FOpenClawTools::MoveLeft(const TSharedPtr<FJsonObject>& Params)
 {
-	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
-	
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetEnhancedInputSubsystem();
+	if (!Subsystem) return MakeErrorResult(TEXT("Enhanced Input Subsystem not found")); // ← this was missing
+
 	UInputAction* MoveAction = LoadObject<UInputAction>(
 		nullptr, 
 		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
 	);
 	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
+    
+	Subsystem->InjectInputVectorForAction(
+		MoveAction,
+		FVector(-1.0f, 0.0f, 0.0f),
+		TArray<UInputModifier*>(),
+		TArray<UInputTrigger*>()
+	);
 
-	Subsystem->InjectInputVectorForAction(MoveAction,
-				FVector(-1.0f, 0.0f, 0.0f),
-				TArray<UInputModifier*>(),
-				TArray<UInputTrigger*>());
-	
-	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
-	Result->SetBoolField(TEXT("success"), true);
-	Result->SetStringField(TEXT("message"), TEXT("Move forward injected"));
-	return Result;
+	return GetWorldState(nullptr);
 }
 
 TSharedPtr<FJsonObject> FOpenClawTools::MoveRight(const TSharedPtr<FJsonObject>& Params)
 {
-	auto Subsystem = FOpenClawTools::GetEnhancedInputSubsystem();
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetEnhancedInputSubsystem();
+	if (!Subsystem) return MakeErrorResult(TEXT("Enhanced Input Subsystem not found")); // ← this was missing
 
-	// Load your Move InputAction assets
 	UInputAction* MoveAction = LoadObject<UInputAction>(
 		nullptr, 
 		TEXT("/Game/StackOBot/Input/IA_Move.IA_Move") 
 	);
 	if (!MoveAction) return MakeErrorResult(TEXT("Move InputAction not found"));
-	
-	Subsystem->InjectInputVectorForAction(MoveAction,
-				FVector(1.0f, 0.0f, 0.0f),
-				TArray<UInputModifier*>(),
-				TArray<UInputTrigger*>());
+    
+	Subsystem->InjectInputVectorForAction(
+		MoveAction,
+		FVector(1.0f, 0.0f, 0.0f),
+		TArray<UInputModifier*>(),
+		TArray<UInputTrigger*>()
+	);
 
-	TSharedPtr<FJsonObject> Result = MakeShareable(new FJsonObject());
-	Result->SetBoolField(TEXT("success"), true);
-	Result->SetStringField(TEXT("message"), TEXT("Move backward injected"));
-	return Result;
+	return GetWorldState(nullptr);
 }
 
 TSharedPtr<FJsonObject> FOpenClawTools::Jump(const TSharedPtr<FJsonObject>& Params)

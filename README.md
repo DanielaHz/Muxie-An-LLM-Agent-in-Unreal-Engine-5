@@ -71,7 +71,7 @@ The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for it
 
 The agent reached the Bug's position but did not jump to kill it
 
-![](Assets/AgentDemo1.gif)
+![](Assets/AgentDemo1.gif)(https://drive.google.com/file/d/14LmforHeIA6YE21ufCPwtPKYYkLe9_e0/view?usp=drive_link)
 
 ### Instructions to Run the System
 
@@ -107,7 +107,7 @@ The agent receives a simple instruction in natural language with minimal informa
 ```
 
 2. Natural language prompt with full context
-
+!
 ```
 Input: Play the Editor level. Your goal is to reach the position X=-330, Y=230, Z=52, where a Bug target is located. Navigate autonomously using the MoveForward, MoveBackward, MoveLeft and MoveRight tools. Repeat until the distance to the target is less than 5 units in both the X and Y axes. Once you are within that range, call the Jump tool followed by MoveForward to kill the Bug.
 Output: The agent managed to reach the position and collide with the object in the Blueprint, but did not kill it as expected.
@@ -115,9 +115,9 @@ Comment: It is surprisingly a good result, as it managed to move to the position
 ```
 
 ### Notes
-- If you don't give the agent access to the current state — at least its position — you can inject movement functions, but it won't recognize where it is in the 3D world. Therefore, returning the current position is essential for navigating the world properly.
+- If you don't give the agent access to the current state, at least its position, you can inject movement functions, but it won't recognize where it is in the 3D world. Therefore, returning the current position is essential for navigating the world properly.
 - Agents don't have perception of time, so the exposed tools somehow have to include a delay to let the Editor render and run in a more "human-like" manner.
-- OpenClaw loses session context very quickly, so it may forget that it was previously connected and able to manipulate the project — even when the plugin is still connected. I recommend always providing it with the project name, the gateway address where it can reach the Unreal Editor, and having it run a small test to confirm it can inject and manipulate commands successfully
+- OpenClaw loses session context very quickly, so it may forget that it was previously connected and able to manipulate the project — even when the plugin is still connected. I recommend always providing it with the project name, the gateway address where it can reach the Unreal Editor, and having it run a small test to confirm it can inject and manipulate commands successfully, example:
 ```
 Project: MuxieLLM
 Gateway: host.docker.internal:27184
