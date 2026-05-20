@@ -117,3 +117,11 @@ Comment: It is surprisingly a good result, as it managed to move to the position
 ### Notes
 - If you don't give the agent access to the current state — at least its position — you can inject movement functions, but it won't recognize where it is in the 3D world. Therefore, returning the current position is essential for navigating the world properly.
 - Agents don't have perception of time, so the exposed tools somehow have to include a delay to let the Editor render and run in a more "human-like" manner.
+- OpenClaw loses session context very quickly, so it may forget that it was previously connected and able to manipulate the project — even when the plugin is still connected. I recommend always providing it with the project name, the gateway address where it can reach the Unreal Editor, and having it run a small test to confirm it can inject and manipulate commands successfully
+```
+Project: MuxieLLM
+Gateway: host.docker.internal:27184
+Editor: Unreal Engine 5.6
+Available tools: 37 (OpenClaw plugin)
+Run editor.getState first to confirm connection before any other command.
+```
