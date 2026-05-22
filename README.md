@@ -4,18 +4,18 @@
 ![OpenClaw.png](Assets/Demo-validation.gif)(https://drive.google.com/file/d/1yCiU0ErI--wYDydDgTGZUlIBayBf9atg/view?usp=drive_link)
 
 
-This solution uses Unreal Engine 5 as the environment where the 3D world lives, OpenAI 5.3 as the LLM “brain” of the agents, and OpenClaw as the agent platform.
-To connect Unreal Engine and OpenClaw, I used the OpenClaw Unreal plugin available in the following repository:
+This solution uses `Unreal Engine 5` as the environment where the 3D world lives, `OpenAI 5.3` as the LLM “brain” of the agents, and OpenClaw as the agent platform.
+To connect Unreal Engine and `OpenClaw`, I used the `OpenClaw Unreal plugin` available in the following repository:
 https://github.com/TomLeeLive/openclaw-unreal-plugin
 
 ## Pipeline and design choices
 
 ![](Assets/pipeline.svg)
 
-- **Unreal Engine:** It is the standard software for real‑time applications, and it has also become very popular in robotic simulation environments thanks to its ability to simulate photorealistic environments, an aspect that is especially valuable when training robots in simulation.
-- **GPT-Codex-5.3:**  I’ve been experimenting with LLMs for a couple of months, testing everything from local models to cloud solutions like DeepSeek, Claude Opus, and OpenAI. So far, in my experience, OpenAI’s models have delivered the most consistent and reliable results. Because of that, I consider OpenAI 5.3 a strong and affordable “brain” for this task.
-- **OpenClaw:** In parallel with my LLM experimentation, I’ve been using OpenClaw for personal tasks, and I’m genuinely amazed by what it enables. The platform makes it surprisingly easy to build powerful agent workflows, and it has consistently delivered results.
-- **OpenClawUE:** The bridge between Unreal Engine and OpenClaw through an MCP connection.
+- `Unreal Engine`: It is the standard software for real‑time applications, and it has also become very popular in robotic simulation environments thanks to its ability to simulate photorealistic environments, an aspect that is especially valuable when training robots in simulation.
+- `GPT-Codex-5.3`:  I’ve been experimenting with LLMs for a couple of months, testing everything from local models to cloud solutions like DeepSeek, Claude Opus, and OpenAI. So far, in my experience, OpenAI’s models have delivered the most consistent and reliable results. Because of that, I consider OpenAI 5.3 a strong and affordable “brain” for this task.
+- `OpenClaw`: In parallel with my LLM experimentation, I’ve been using OpenClaw for personal tasks, and I’m genuinely amazed by what it enables. The platform makes it surprisingly easy to build powerful agent workflows, and it has consistently delivered results.
+- `OpenClawUE`: The bridge between Unreal Engine and OpenClaw through an MCP connection.
 
 ## Project Spectations 
 ### virtual environment
@@ -33,16 +33,15 @@ The assets used to generate the next level were taken from FAB. They are open‑
 The agent must be able to start the editor, access the main character, and call the appropriate action functions to move the character toward the target bug and eliminate it autonomously. Through the MCP connection, the agent has access to a set of tools it can select and execute as needed. The task is considered successful once the agent kills at least one bug, demonstrating that it can navigate, act, and time its jump correctly.
 
 ### Agent Current State
-
-The agent's current state is observed through the OpenClaw UI and the Rider Terminal, which display in real time the tools being called, the decisions being made from the OpenClaw side, and the actions being executed in the Unreal Editor.
-In terms of world state, to give the agent context about where it is, I use the function GetWorldState, which returns the location, rotation, and velocity of the current pawn actor. With this, the agent can evaluate its position after calling the movement tools and navigate toward the desired target.
+- The agent's current state is observed through the OpenClaw UI and the Rider Terminal, which display in real time the tools being called, the decisions being made from the OpenClaw side, and the actions being executed in the Unreal Editor.
+- In terms of world state, to give the agent context about where it is, I use the function `GetWorldState()`, which returns the location, rotation, and velocity of the current pawn actor. With this, the agent can evaluate its position after calling the movement tools and navigate toward the desired target.
 
 ### Actions
 
 To interact with the world, the agent needs to:
 
 1. Start the editor in Play mode to spawn  (BP_Bot).
-2. Navigate the world using the following actions than simulate w,a,s,z keyboard inputs. 
+2. Navigate the world using the following actions than simulate w,a,s,z keyboard inputs.
 
 - `MoveForward`
 - `MoveBackward`
@@ -53,12 +52,12 @@ To interact with the world, the agent needs to:
 ### Kill Mechanic
 Bugs are eliminated when Muxie jumps on top of the bug’s target point. This means the agent must determine the correct moment to jump in order to collide accurately.
 
-- **When the collision is successful**: A confetti effect is triggered and the bug disappears from the world
-- **When the collision fails**: Muxie turns red
+- `When the collision is successful`: A confetti effect is triggered and the bug disappears from the world
+- `When the collision fails`: Muxie turns red
 
 ### LLM
 
-The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
+The brain of the agent is the `GPT-5.3-codex of OpenAI`.  It was chosen for its strong reasoning results and competitive pricing per million tokens.
 
 ### Goal Validation
 
@@ -68,7 +67,7 @@ The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for it
 
 ***Demo 3: Agent-driven actions (low-level) achieving the goal***
 
-The agent reached the Bug's position but did not jump to kill it. My conclusion is LLM agents excel at high-level planning and goal reasoning, but struggle with precise motor control when exposed to low-level primitives like move_forward or move_backward. This project demonstrated that reliability significantly degrades when the agent must chain many raw movement actions to accomplish a spatially precise task like jumping on a bug.
+The agent reached the Bug's position but did not jump to kill it. My conclusion is LLM agents excel at high-level planning and goal reasoning, but struggle with precise motor control when exposed to low-level primitives like `move_forward` or `move_backward`. This project demonstrated that reliability significantly degrades when the agent must chain many raw movement actions to accomplish a spatially precise task like jumping on a bug.
 
 ![](Assets/AgentDemo1.gif)(https://drive.google.com/file/d/14LmforHeIA6YE21ufCPwtPKYYkLe9_e0/view?usp=drive_link)
 
@@ -121,6 +120,6 @@ Comment: It is surprisingly a good result, as it managed to move to the position
 Project: MuxieLLM
 Gateway: host.docker.internal:27184
 Editor: Unreal Engine 5.6
-Available tools: 37 (OpenClaw plugin)
+Available tools: 41 (OpenClaw plugin)
 Run editor.getState first to confirm connection before any other command.
 ```
