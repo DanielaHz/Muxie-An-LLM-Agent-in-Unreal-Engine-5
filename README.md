@@ -53,7 +53,6 @@ To interact with the world, the agent needs to:
 ### Kill Mechanic
 Bugs are eliminated when Muxie jumps on top of the bug’s target point. This means the agent must determine the correct moment to jump in order to collide accurately.
 
-
 - **When the collision is successful**: A confetti effect is triggered and the bug disappears from the world
 - **When the collision fails**: Muxie turns red
 
@@ -67,9 +66,9 @@ The brain of the agent is the **GPT-5.3-codex of OpenAI**.  It was chosen for it
 
 ![](Assets/HumanDemo.gif)
 
-***Demo 3: Agent-driven actions "achieving" the goal***
+***Demo 3: Agent-driven actions (low-level) achieving the goal***
 
-The agent reached the Bug's position but did not jump to kill it
+The agent reached the Bug's position but did not jump to kill it. My conclusion is LLM agents excel at high-level planning and goal reasoning, but struggle with precise motor control when exposed to low-level primitives like move_forward or move_backward. This project demonstrated that reliability significantly degrades when the agent must chain many raw movement actions to accomplish a spatially precise task like jumping on a bug.
 
 ![](Assets/AgentDemo1.gif)(https://drive.google.com/file/d/14LmforHeIA6YE21ufCPwtPKYYkLe9_e0/view?usp=drive_link)
 
