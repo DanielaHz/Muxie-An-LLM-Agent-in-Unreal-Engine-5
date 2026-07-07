@@ -1,4 +1,3 @@
-# Humanoid Challenge - Software Engineering
 
 ***Demo 1: World state querying: the agent counts all instances of a specific Blueprint object in the level in real time***
 ![OpenClaw.png](Assets/Demo-validation.gif)(https://drive.google.com/file/d/1yCiU0ErI--wYDydDgTGZUlIBayBf9atg/view?usp=drive_link)
